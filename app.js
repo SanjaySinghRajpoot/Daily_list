@@ -59,7 +59,7 @@ function addItem(e){
         // show container
         container.classList.add("show-container");
         // add local stroage
-        addToLocalStorage(is,value);
+        addToLocalStorage(id, value);
         // back to defautl 
         setBackToDefault();
     }
@@ -68,7 +68,6 @@ function addItem(e){
             displayAlert('value changed', 'sucess');
             editLocalStorage(editID, value);
             setBackToDefault();
-
     }
     else{
       displayAlert("Empty fields", "danger");
@@ -99,6 +98,7 @@ function clearItems(){
     container.classList.remove("show-container");
     displayAlert("empty list", "danger");
     setBackToDefault();
+    localStorage.removeItem("list");
 }
 
 function addToLocalStorage(id, value){
@@ -122,7 +122,7 @@ function deleteItem(e){
 
 function editItem(e) {
     const element = e.currentTarget.parentElement.parentElement;
-    editElement = w.currentTarget.parentElement.previousElementSibling;
+    editElement = e.currentTarget.parentElement.previousElementSibling;
     grocery.value = editElement.innerHTML;  //set some form value 
     editFlag = true;
     editID = element.dataset.id;
@@ -138,18 +138,38 @@ function setBackToDefault(){
 
 function addToLocalStorage(id, value){
    const grocery = {id: id, value: value};
-   let items = localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")): [];
+   let items = getLocalStorage();
+    
    items.push(grocery);
-   localStorage.setItem('list', JSON.stringify(items));
+   localStorage.setItem("list", JSON.stringify(items));
 }
 
+function getLocalStorage(id, value){
+    return localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")): []; 
+}
 
 function removeFromLocalStorage(id, value){
- 
+    let items = getLocalStorage();
+
+    items = items.filter(function(item){
+      if(item.id !== id){
+           return item;
+      } 
+    })
+
+    localStorage.setItem("list", JSON.stringify(items));
 }
 
 function editLocalStorage(id, value){
-     
+      let items = getLocalStorage();
+      items = items.map(function(item){
+          if(item.id === id){
+              item.value = value;
+          }
+          return item;
+      });
+
+      localStorage.setItem("list", JSON.stringify(items));
 }
 
 
