@@ -19,6 +19,8 @@ form.addEventListener("submit", addItem);
 // clear items
 clearBtn.addEventListener("click", clearItems);
 
+window.addEventListener('DOMContentLoaded', setupItems);
+
 const deletebtn = document.querySelector('.delete-btn');
 
 function addItem(e){
@@ -29,31 +31,9 @@ function addItem(e){
     const id = new Date().getTime().toString();   // to generate a random value 
     
     if(value && !editFlag){
-       const element = document.createElement('article');
-       element.classList.add('grocery-list');  // adding items to the list 
-       
-       // add id
-       const attr = document.createAttribute('data-id');
-       attr.value = id;
-       element.setAttributeNode(attr);
-       element.innerHTML = ` <p class="title">${value}</p>
-       <div class="btn-container">
-            <button type="button" class="edit-btn">
-                <i class="fas fa-edit"></i>
-            </button>
-            <button type="button" class="delete-btn">
-                <i class="fas fa-trash"></i>
-            </button>
-       </div>`;
-   
-       const deletebtn = element.querySelector('.delete-btn');
-       const editbtn = element.querySelector('.edit-btn');
-       
-       deletebtn.addEventListener('click', deleteItem);
-       editbtn.addEventListener('click', editItem);
 
-       // append child add to the list 
-        list.appendChild(element);
+        createListItem(id, value);
+     
        // display alert
         displayAlert("items added to the list ", "success");
         // show container
@@ -63,12 +43,14 @@ function addItem(e){
         // back to defautl 
         setBackToDefault();
     }
+
     else if(value && editFlag){ 
-            editElement.innerHTML = value;
-            displayAlert('value changed', 'sucess');
-            editLocalStorage(editID, value);
-            setBackToDefault();
+        editElement.innerHTML = value;
+        displayAlert('value changed', 'sucess');
+        editLocalStorage(editID, value);
+        setBackToDefault();
     }
+
     else{
       displayAlert("Empty fields", "danger");
     }
@@ -172,4 +154,41 @@ function editLocalStorage(id, value){
       localStorage.setItem("list", JSON.stringify(items));
 }
 
+function setupItems(){
+    let items = getLocalStorage();
+    if(items.length > 0){
+        items.forEach(function(item){
+            createListItem(items.id, items.value)
+        })         
+    }
 
+    container.classList.add("show-container");
+}
+
+function createListItem(id, value){
+    const element = document.createElement('article');
+    element.classList.add('grocery-list');  // adding items to the list 
+    
+    // add id
+    const attr = document.createAttribute('data-id');
+    attr.value = id;
+    element.setAttributeNode(attr);
+    element.innerHTML = ` <p class="title">${value}</p>
+    <div class="btn-container">
+         <button type="button" class="edit-btn">
+             <i class="fas fa-edit"></i>
+         </button>
+         <button type="button" class="delete-btn">
+             <i class="fas fa-trash"></i>
+         </button>
+    </div>`;
+
+    const deletebtn = element.querySelector('.delete-btn');
+    const editbtn = element.querySelector('.edit-btn');
+    
+    deletebtn.addEventListener('click', deleteItem);
+    editbtn.addEventListener('click', editItem);
+
+    // append child add to the list 
+     list.appendChild(element);
+}
