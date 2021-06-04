@@ -19,7 +19,7 @@ form.addEventListener("submit", addItem);
 // clear items
 clearBtn.addEventListener("click", clearItems);
 
-window.addEventListener('DOMContentLoaded', setupItems);
+window.addEventListener("DOMContentLoaded", setupItems);
 
 const deletebtn = document.querySelector('.delete-btn');
 
@@ -32,7 +32,7 @@ function addItem(e){
     
     if(value && !editFlag){
 
-        createListItem(id, value);
+       createListItem(id, value);
      
        // display alert
         displayAlert("items added to the list ", "success");
