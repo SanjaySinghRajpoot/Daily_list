@@ -173,7 +173,8 @@ function createListItem(id, value){
     const attr = document.createAttribute('data-id');
     attr.value = id;
     element.setAttributeNode(attr);
-    element.innerHTML = ` <p class="title">${value}</p>
+    element.innerHTML = ` 
+    <p class="title">${value}</p>
     <div class="btn-container">
          <button type="button" class="edit-btn">
              <i class="fas fa-edit"></i>
