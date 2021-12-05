@@ -10,3 +10,6 @@ The main purpous of this project is learning. its a simple web page.
 
 PREREQUISITE
 Any one who has basic knowledge of Javascript,HTML,CSS can make a contribution.
+
+# Live Website
+link - https://sanjaysinghrajpoot.github.io/Daily_list/
